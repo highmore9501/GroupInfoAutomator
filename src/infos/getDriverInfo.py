@@ -2,6 +2,9 @@ from typing import List, Dict
 
 
 def getDriverInfo(driver_info: str) -> List[Dict[str, str]]:
+    """
+    解析司机信息
+    """
     try:
         driver_info = driver_info.strip().split("\n")
         driver_info = [info.strip().split("：") for info in driver_info]

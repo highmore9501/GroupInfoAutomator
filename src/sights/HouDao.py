@@ -49,6 +49,9 @@ def process_table(doc_path, new_guests, output_path):
 
 
 def editHouDaoDocx(guests, driver, visit_date, driver_photo_path):
+    """
+    编辑猴岛景点的报备文件
+    """
     today = datetime.now().strftime("%Y年%m月%d日")
     template_path = "templates/猴岛.docx"
     guest_number = len(guests)

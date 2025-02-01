@@ -49,6 +49,9 @@ def process_table(doc_path, new_guests, output_path):
 
 
 def editQianGuQinDocx(guests, driver, visit_date, driver_photo_path):
+    """
+    编辑千古情报备文件
+    """
     today = datetime.now().strftime("%Y年%m月%d日")
     template_path = "templates/千古情.docx"
     guest_number = len(guests)

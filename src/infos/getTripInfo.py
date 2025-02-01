@@ -81,6 +81,9 @@ def parse_car_info(car_str: str) -> List[Dict[str, str]]:
 
 
 def getTripInfo(trip_info: str) -> Optional[Dict[str, Any]]:
+    """
+    解析行程信息
+    """
     trip_info_dict = {}
     blocks = trip_info.strip().split("\n\n")
 

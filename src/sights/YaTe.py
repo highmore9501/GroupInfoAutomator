@@ -5,6 +5,9 @@ from openpyxl import load_workbook
 
 def editYaTeDocx(
         flight_info, attraction_info, guests, driver, visit_date):
+    """
+    编辑亚特兰蒂斯小包团报备文件
+    """
 
     template_path = "templates/亚特兰蒂斯.xlsx"
     driver_name = driver['司机']

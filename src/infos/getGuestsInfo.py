@@ -3,6 +3,9 @@ from id_validator import validator
 
 
 def getGuestsInfo(guests_info: str) -> List[Dict[str, str]]:
+    """
+    解析游客信息
+    """
     guests = []
     try:
         for guest in guests_info.strip().split("\n"):
