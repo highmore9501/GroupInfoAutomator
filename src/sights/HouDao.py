@@ -1,6 +1,6 @@
 from docx import Document
 from datetime import datetime
-from src.utils.utils import copy_row_and_insert, clear_table, replace_in_docx
+from src.utils.utils import copy_row_and_insert, clear_table, replace_in_docx, replace_img_in_docx
 import os
 
 
@@ -48,7 +48,7 @@ def process_table(doc_path, new_guests, output_path):
     doc.save(output_path)
 
 
-def editHouDaoDocx(guests, driver, visit_date):
+def editHouDaoDocx(guests, driver, visit_date, driver_photo_path):
     today = datetime.now().strftime("%Y年%m月%d日")
     template_path = "templates/猴岛.docx"
     guest_number = len(guests)
@@ -75,10 +75,14 @@ def editHouDaoDocx(guests, driver, visit_date):
         output_path=output_path
     )
 
+    # 替换docx中的图片
+    replace_img_in_docx(
+        output_path, "word\media\image2.jpeg", driver_photo_path)
+
     # 删除掉中间文件
 
     os.remove(temp_doc_path)
-    return f"猴岛报备文件已生成：{output_path},请手动替换司机照片"
+    return f"猴岛报备文件已生成：{output_path}"
 
 
 # 使用示例

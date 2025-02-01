@@ -3,6 +3,43 @@ from typing import Dict, Any, List, Optional
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 from datetime import datetime
+import shutil
+import zipfile
+import os
+
+
+def replace_img_in_docx(doc_path, img_path_in_docx, image_path):
+    """
+    替换Word文档中的图片
+    """
+    # 将原来的docx文件改成zip文件
+    zip_path = doc_path.replace('.docx', '.zip')
+    shutil.copyfile(doc_path, zip_path)
+
+    # 创建临时目录用于解压缩
+    temp_dir = 'temp_docx'
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(temp_dir)
+
+    # 替换图片，保留新图片的扩展名
+    img_dir, img_filename = os.path.split(img_path_in_docx)
+    original_img_path = os.path.join(temp_dir, img_dir, img_filename)
+
+    if os.path.exists(original_img_path):
+        os.remove(original_img_path)
+    shutil.copyfile(image_path, original_img_path)
+
+    # 将文件重新压缩成zip并改回docx
+    with zipfile.ZipFile(zip_path, 'w') as zip_ref:
+        for foldername, subfolders, filenames in os.walk(temp_dir):
+            for filename in filenames:
+                file_path = os.path.join(foldername, filename)
+                zip_ref.write(file_path, os.path.relpath(file_path, temp_dir))
+
+    shutil.move(zip_path, doc_path)
+
+    # 清理临时文件
+    shutil.rmtree(temp_dir)
 
 
 def get_trip_slice(attraction_info: List[Dict[str, Any]], start_date: str, trip_days: int) -> List[Dict[str, Any]]:

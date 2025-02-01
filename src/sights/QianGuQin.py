@@ -1,6 +1,6 @@
 from docx import Document
 from datetime import datetime
-from src.utils.utils import copy_row_and_insert, clear_table, replace_in_docx
+from src.utils.utils import copy_row_and_insert, clear_table, replace_in_docx, replace_img_in_docx
 import os
 
 
@@ -48,7 +48,7 @@ def process_table(doc_path, new_guests, output_path):
     doc.save(output_path)
 
 
-def editQianGuQinDocx(guests, driver, visit_date):
+def editQianGuQinDocx(guests, driver, visit_date, driver_photo_path):
     today = datetime.now().strftime("%Y年%m月%d日")
     template_path = "templates/千古情.docx"
     guest_number = len(guests)
@@ -63,22 +63,26 @@ def editQianGuQinDocx(guests, driver, visit_date):
         "2025年1月30日": today,
         "370602197812251632": driver["身份证"],
     }
-
+    # 替换文件中的内容
     replace_in_docx(
         input_path=template_path,
         output_path=temp_doc_path,
         replacements=replace_dict
     )
+    # 处理表格
     process_table(
         doc_path=temp_doc_path,
         new_guests=[(g["name"], g["id"], g["location"]) for g in guests],
         output_path=output_path
     )
+    # 替换docx中的图片
+    replace_img_in_docx(
+        output_path, "word\media\image2.jpeg", driver_photo_path)
 
     # 删除掉中间文件
 
     os.remove(temp_doc_path)
-    return f"千古情报备文件已生成：{output_path},默认是14:00场次，请手动替换司机照片"
+    return f"千古情报备文件已生成：{output_path},默认是14:00场次"
 
 
 # 使用示例

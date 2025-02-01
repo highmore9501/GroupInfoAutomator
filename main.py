@@ -26,14 +26,16 @@ def generate_report(trip_info, guest_info, driver_info, driver_photo_path):
         report += "未找到千古情景点信息\n"
     else:
         visit_date = qianGuQing['日期']
-        report += editQianGuQinDocx(guests, driver, visit_date) + "\n"
+        report += editQianGuQinDocx(guests, driver,
+                                    visit_date, driver_photo_path) + "\n"
 
     houDao = searchSight("猴岛", attraction_info)
     if not houDao:
         report += "未找到猴岛景点信息\n"
     else:
         visit_date = houDao['日期']
-        report += editHouDaoDocx(guests, driver, visit_date) + "\n"
+        report += editHouDaoDocx(guests, driver,
+                                 visit_date, driver_photo_path) + "\n"
 
     yaTe = searchSight("亚特兰蒂斯", attraction_info)
     if not yaTe:
@@ -52,11 +54,12 @@ with gr.Blocks() as demo:
     trip_info = gr.Textbox(label="团队行程录入处")
     guest_info = gr.Textbox(label="客人信息录入处")
     driver_info = gr.Textbox(label="司机信息录入处")
+    driver_photo_path = gr.File(label="司机照片")
 
     output = gr.Textbox(label="输出信息")
 
     generate_button = gr.Button("生成报备文件")
     generate_button.click(generate_report, inputs=[
-                          trip_info, guest_info, driver_info], outputs=output)
+                          trip_info, guest_info, driver_info, driver_photo_path], outputs=output)
 
 demo.launch()
