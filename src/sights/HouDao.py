@@ -7,7 +7,7 @@ import os
 def process_table(doc_path, new_guests, output_path):
     doc = Document(doc_path)
 
-    # Step 1: 定位目标表格（假设是第一个包含6列的表格）
+    # 定位目标表格（假设是第一个包含6列的表格）
     target_table = None
     for table in doc.tables:
         if len(table.columns) == 6:  # 根据列数识别表格
@@ -17,10 +17,10 @@ def process_table(doc_path, new_guests, output_path):
     if not target_table:
         raise ValueError("未找到符合条件的表格")
 
-    # Step 2: 清空第2-6行的数据
+    # 清空第2-6行的数据
     clear_table(target_table, 2, 6)
 
-    # step 3: 如果guests数量少于等于4个，直接填充客人信息
+    # 如果guests数量少于等于4个，直接填充客人信息
     if len(new_guests) <= 4:
         for idx, (name, id_num, region) in enumerate(new_guests, start=2):
             target_table.rows[idx].cells[0].text = str(idx - 1)
@@ -32,10 +32,10 @@ def process_table(doc_path, new_guests, output_path):
         doc.save(output_path)
         return
 
-    # Step 3: 如果guests数量大于4个，复制足够数量的第2行，插入到表格中
+    # 如果guests数量大于4个，复制足够数量的第2行，插入到表格中
     copy_row_and_insert(target_table, 2, len(new_guests) - 5)
 
-    # Step 4: 填充客人信息
+    # 填充客人信息
     for idx, (name, id_num, region) in enumerate(new_guests, start=1):
         target_table.rows[idx].cells[0].text = str(idx)
         target_table.rows[idx].cells[1].text = name

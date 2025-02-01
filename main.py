@@ -4,7 +4,8 @@ from src.infos.getTripInfo import getTripInfo
 from src.infos.getDriverInfo import getDriverInfo
 from src.sights.QianGuQin import editQianGuQinDocx
 from src.sights.HouDao import editHouDaoDocx
-from src.searchSight import searchSight
+from src.sights.YaTe import editYaTeDocx
+from src.utils.utils import searchSight
 
 
 def generate_report(trip_info, guest_info, driver_info, driver_photo_path):
@@ -34,12 +35,13 @@ def generate_report(trip_info, guest_info, driver_info, driver_photo_path):
         visit_date = houDao['日期']
         report += editHouDaoDocx(guests, driver, visit_date) + "\n"
 
-    # yaTe = searchSight("亚特兰蒂斯")
-    # if not yaTe:
-    #     report += "未找到亚特兰蒂斯景点信息\n"
-    # else:
-    #     report += editYaTeDocx(
-    #         flight_info, hotel_info, attraction_info, car_info, guests, driver, driver_photo_path, yaTe) + "\n"
+    yaTe = searchSight("亚特兰蒂斯", attraction_info)
+    if not yaTe:
+        report += "未找到亚特兰蒂斯景点信息\n"
+    else:
+        visit_date = yaTe['日期']
+        report += editYaTeDocx(
+            flight_info, attraction_info, guests, driver, visit_date) + "\n"
 
     return report
 
